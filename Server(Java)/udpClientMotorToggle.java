@@ -9,11 +9,11 @@ import java.net.SocketException;
 
 import javax.swing.JFrame;
 
-public class udpClient extends JFrame{
+public class udpClientMotorToggle extends JFrame{
 	
 	boolean spaceHeld = false;
 
-	public udpClient() {
+	public udpClientMotorToggle() {
 		
 		setLocationRelativeTo(null);
 		addKeyListener(new KeyListener() {
@@ -86,7 +86,7 @@ public class udpClient extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		JFrame frame = new udpClient();
+		JFrame frame = new udpClientMotorToggle();
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setSize(new Dimension(200, 100));
 		frame.setVisible(true);
