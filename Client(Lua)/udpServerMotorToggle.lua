@@ -1,3 +1,10 @@
+wifi.setmode(wifi.STATIONAP)
+cfg={}
+cfg.ssid="ESP-Haptic"
+cfg.pwd="password"
+wifi.ap.config(cfg)
+
+
 --Pin setup
 outPin = 1
 pwm.setup(outPin, 1000, 0)
