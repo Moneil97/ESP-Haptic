@@ -1,4 +1,4 @@
-#include <ESP8266WiFi.h>
+ #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <WiFiUdp.h>
 #include <ESP8266WebServer.h>
@@ -7,17 +7,18 @@
 #include <SPI.h>
 #include <String.h>
 #include "FS.h"
-#define D3 0 //Pin D3 on esp8266 D1 mini
+//#define D3 0 //Pin D3 on esp8266 D1 mini
+#define D0 16 //Pin D0 on esp8266 D1 mini
 
 
 WiFiUDP Udp;
 const char *ssid = "HapticAP";
 const char *password = "password";
-unsigned int localPort = 50000; // local port to listen on
+unsigned int localPort = 60000; // local port to listen on
 char packetBuffer[255];//buffer to hold incoming packet
 int vibStart = -1; //Start time of last vibration request
 int vibDur = 200; //Duration of vibration in ms
-int vibPin = D3;  //Output pin
+int vibPin = D0;  //Output pin
 //String msg;
 
 
@@ -49,6 +50,8 @@ void setup() {
   Serial.println("Connection Successful!");
   Serial.println("Your device IP address is ");
   Serial.println(WiFi.localIP());
+  Serial.println("Your device MAC address is ");
+  Serial.println(WiFi.macAddress());
 
   
   Udp.begin(localPort);
@@ -71,13 +74,18 @@ void loop() {
       packetBuffer[len] = 0;
     }
 
-    //msg = String(packetBuffer);
+    String msg = String(packetBuffer);
 
     //start vibration and timer
     if (strstr(packetBuffer, "1")) {
        digitalWrite(vibPin, HIGH);
        vibStart = millis();
        Serial.println("Vibrate");
+    }
+    else{
+      Serial.println("Unknown Packet:");
+      Serial.println(msg);
+      Serial.println();
     }
   }
 
