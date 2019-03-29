@@ -1,4 +1,4 @@
- #include <ESP8266WiFi.h>
+#include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <WiFiUdp.h>
 #include <ESP8266WebServer.h>
@@ -7,9 +7,10 @@
 #include <SPI.h>
 #include <String.h>
 #include "FS.h"
-//#define D3 0 //Pin D3 on esp8266 D1 mini
+#define LED_BUILTIN 2
+#define D3 0 //Pin D3 on esp8266 D1 mini
 #define D0 16 //Pin D0 on esp8266 D1 mini
-
+#define vibPin D3 //Motor output pin
 
 WiFiUDP Udp;
 const char *ssid = "HapticAP";
@@ -18,14 +19,15 @@ unsigned int localPort = 60000; // local port to listen on
 char packetBuffer[255];//buffer to hold incoming packet
 int vibStart = -1; //Start time of last vibration request
 int vibDur = 200; //Duration of vibration in ms
-int vibPin = D0;  //Output pin
-//String msg;
-
 
 void setup() {
   
   pinMode(vibPin, OUTPUT);
   digitalWrite(vibPin, LOW);
+  
+  pinMode(LED_BUILTIN, OUTPUT); 
+  digitalWrite(LED_BUILTIN, LOW); //Turn on Builtin LED (LOW == ON)
+  
   Serial.begin(115200);
   
   // check for the presence of the shield:
@@ -46,6 +48,8 @@ void setup() {
     delay(500);
   }
 
+  //Turn off LED to signal that it has connected to Wifi
+  digitalWrite(LED_BUILTIN, HIGH); //Turn off Builtin LED (HIGH == OFF)
   Serial.println("");
   Serial.println("Connection Successful!");
   Serial.println("Your device IP address is ");
@@ -79,6 +83,7 @@ void loop() {
     //start vibration and timer
     if (strstr(packetBuffer, "1")) {
        digitalWrite(vibPin, HIGH);
+       digitalWrite(LED_BUILTIN, LOW); //Turn on Builtin LED (LOW == ON)
        vibStart = millis();
        Serial.println("Vibrate");
     }
@@ -92,6 +97,7 @@ void loop() {
   //if vibDur time has elapsed since last request then turn off
   if ((vibStart > 0) && (vibStart+vibDur < millis())){
     digitalWrite(vibPin, LOW);
+    digitalWrite(LED_BUILTIN, HIGH); //Turn off Builtin LED (HIGH == OFF)
     vibStart = -1;
     Serial.println("Stop vibrate");
   }
