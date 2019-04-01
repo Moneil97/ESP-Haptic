@@ -63,11 +63,12 @@ public class udpClientMotorToggle extends JFrame{
 				}
 				
 				byte[] buf = new byte[1];
-				buf[0] = 1;
+				buf[0] = '1';
 				
 				
 				String MAC = "55-55-55-55-55-55";
 				String IP = MACmapper.mapMACtoIP(MAC);
+				System.out.println(IP);
 				
 				
 				while (true) {

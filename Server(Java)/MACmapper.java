@@ -12,7 +12,7 @@ public class MACmapper {
 	      BufferedReader input =  new BufferedReader(new InputStreamReader(p.getInputStream()));  
 	      
 	      while ((line = input.readLine()) != null) {
-	    	if (line.contains("68-c6-3a-ea-41-bb")) {
+	    	if (line.contains(MAC)) {
 	    		ip = line.split(" ")[2];
 	    		break;
 	    	}
