@@ -63,11 +63,17 @@ public class udpClientMotorToggle extends JFrame{
 				}
 				
 				byte[] buf = new byte[1];
+				buf[0] = 1;
+				
+				
+				String MAC = "55-55-55-55-55-55";
+				String IP = MACmapper.mapMACtoIP(MAC);
+				
 				
 				while (true) {
 					try {
-						buf[0] = (byte) (spaceHeld? '1':'0');
-						esp.send(new DatagramPacket(buf, 1, new InetSocketAddress("192.168.4.1", 1336)));
+						if (spaceHeld)
+							esp.send(new DatagramPacket(buf, 1, new InetSocketAddress(IP, 60000)));
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -90,7 +96,6 @@ public class udpClientMotorToggle extends JFrame{
 		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		frame.setSize(new Dimension(200, 100));
 		frame.setVisible(true);
-		
 	}
 
 }
